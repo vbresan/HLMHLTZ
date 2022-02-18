@@ -1,0 +1,297 @@
+#define ISPIS_LISTE             \
+        do                                                                                              \
+          {                                                                                             \
+            alpha = (double_complex *) d->dp;                                                           \
+            od_mene = (char *) (active_dialog[LISTA+5].dp);                                             \
+                                                                                                        \
+            h = *((double *) d->dp3);                                                                   \
+            dx = h / *((unsigned long int *) d->dp2);                                                   \
+            x = atof(od_mene);                                                                          \
+                                                                                                        \
+            if(modf(x/dx,&tmp_d))                                                                       \
+              x = tmp_d * dx;                                                                           \
+            if(x > h/2)                                                                                 \
+              x = h/2;                                                                                  \
+            else if(x < -h/2)                                                                           \
+              x = - h/2;                                                                                \
+                                                                                                        \
+            od_mene_int = 0;        double tmp_d2; modf((h/2)/dx,&tmp_d2);                              \
+            while(tmp_d < tmp_d2)                                                                     \
+              {                                                                                         \
+                tmp_d++;                                                                                \
+                od_mene_int++;                                                                          \
+              }                                                                                         \
+                                                                                                        \
+            if(od_mene_int+18 > *((unsigned long int *) d->dp2))                                        \
+              do_mene_int = *((unsigned long int *) d->dp2);                                            \
+            else                                                                                        \
+              do_mene_int = od_mene_int+18;                                                             \
+                                                                                                        \
+            if(!d->d1)                                                                                  \
+              {                                                                                         \
+                sprintf(tmp,"%-21s   %-21s   %-21s","x (m)","Re (alpha)","Im (alpha)  (A/m)");                         \
+                textout(screen, font, tmp, 15, 40, gui_fg_color);                                           \
+                                                                                                        \
+                for(i=od_mene_int; i<=do_mene_int; i++)                                                     \
+                   {                                                                                        \
+                     if(alpha[i].imag() >= 0)                                                               \
+                         sprintf(tmp,"%-21.15g   %-21.15g + j%-21.15g",x,alpha[i].real(),alpha[i].imag());  \
+                     else                                                                                   \
+                         sprintf(tmp,"%-21.15g   %-21.15g - j%-21.15g",x,alpha[i].real(),-alpha[i].imag()); \
+                                                                                                        \
+                     textout(screen, font, tmp, 15, 79+(i-od_mene_int)*12, gui_fg_color);                   \
+                                                                                                        \
+                     modf(x/dx,&tmp_d);                                                                     \
+                     x = tmp_d * dx;                                                                        \
+                                                                                                        \
+                     x -=dx;                                                                                \
+                   }                                                                                        \
+              }                                                                                         \
+            else                                                                                        \
+              { double *analiticko;\
+                \
+                analiticko = (double *) active_dialog[HANDLE].dp;\
+                                                                                        \
+                sprintf(tmp,"%-16s   %-16s   %-16s   %-16s","x (m)","Alpha koef.","Rjesenje (A/m)","Pogreska (%)");                         \
+                textout(screen, font, tmp, 15, 40, gui_fg_color);                                           \
+                                                                                                        \
+                for(i=od_mene_int; i<=do_mene_int; i++)                                                     \
+                   {                                                                                        \
+                     sprintf(tmp,"%-16.10g   %-16.10g   %-16.10g   %-16.10g",x,alpha[i].real(),analiticko[i],(alpha[i].real()-analiticko[i])/analiticko[i]*100); \
+                     \
+                     textout(screen, font, tmp, 15, 79+(i-od_mene_int)*12, gui_fg_color);                   \
+                                                                                                        \
+                     modf(x/dx,&tmp_d);                                                                     \
+                     x = tmp_d * dx;                                                                        \
+                                                                                                        \
+                     x -=dx;                                                                                \
+                   }                                                                                        \
+              }                                                                                         \
+          } while(0)
+
+/* */
+
+#define DISABLE_ALL_TEXT        \
+        do                                                              \
+          {                                                             \
+            active_dialog[4].flags = active_dialog[5].flags =           \
+            active_dialog[6].flags = active_dialog[8].flags =           \
+            active_dialog[9].flags = active_dialog[10].flags =          \
+            active_dialog[12].flags = active_dialog[13].flags =         \
+            active_dialog[14].flags = active_dialog[15].flags =         \
+            active_dialog[16].flags = active_dialog[17].flags =         \
+            active_dialog[18].flags = active_dialog[19].flags =         \
+            active_dialog[20].flags = active_dialog[21].flags =         \
+            active_dialog[22].flags = active_dialog[23].flags =         \
+            active_dialog[24].flags = active_dialog[25].flags =         \
+            active_dialog[26].flags = active_dialog[27].flags =         \
+            active_dialog[28].flags = active_dialog[29].flags =         \
+            active_dialog[30].flags = active_dialog[31].flags =         \
+            active_dialog[32].flags = active_dialog[33].flags =         \
+            active_dialog[34].flags = D_DISABLED;                       \
+                                                                        \
+            active_dialog[SLIKA].flags = D_HIDDEN;                      \
+          } while(0)
+
+#define ENABLE_ALL_TEXT         \
+        do                                                              \
+          {                                                             \
+            active_dialog[4].flags = active_dialog[5].flags =           \
+            active_dialog[6].flags = active_dialog[8].flags =           \
+            active_dialog[12].flags = active_dialog[13].flags =         \
+            active_dialog[14].flags = active_dialog[15].flags =         \
+            active_dialog[16].flags = active_dialog[17].flags =         \
+            active_dialog[18].flags = active_dialog[19].flags =         \
+            active_dialog[20].flags = active_dialog[21].flags =         \
+            active_dialog[22].flags = active_dialog[23].flags =         \
+            active_dialog[24].flags = active_dialog[25].flags =         \
+            active_dialog[26].flags = active_dialog[27].flags =         \
+            active_dialog[28].flags = active_dialog[29].flags =         \
+            active_dialog[30].flags = active_dialog[31].flags =         \
+            active_dialog[32].flags = active_dialog[33].flags =         \
+            active_dialog[34].flags = 0;                                \
+                                                                        \
+            active_dialog[9].flags = D_SELECTED;                        \
+            active_dialog[10].flags = 0;                                \
+            active_dialog[SLIKA].flags = D_SELECTED;                    \
+          } while(0)
+
+
+#define REDRAW_ABLED            \
+        do                                                              \
+          {                                                             \
+            d_text_proc(MSG_DRAW,&active_dialog[4],0);                  \
+            d_text_proc(MSG_DRAW,&active_dialog[5],0);                  \
+            d_edit_proc(MSG_DRAW,&active_dialog[6],0);                  \
+            d_text_proc(MSG_DRAW,&active_dialog[8],0);                  \
+            d_radio_proc(MSG_DRAW,&active_dialog[9],0);                 \
+            d_radio_proc(MSG_DRAW,&active_dialog[10],0);                \
+            d_text_proc(MSG_DRAW,&active_dialog[12],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[13],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[14],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[15],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[16],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[17],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[18],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[19],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[20],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[21],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[22],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[23],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[24],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[25],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[26],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[27],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[28],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[29],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[30],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[31],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[32],0);                 \
+            d_edit_proc(MSG_DRAW,&active_dialog[33],0);                 \
+            d_text_proc(MSG_DRAW,&active_dialog[34],0);                 \
+                                                                        \
+            slika_proc(MSG_DRAW,&active_dialog[SLIKA],0);               \
+          } while(0)
+
+/* */
+
+#define NACRTAJ_DVA_GRAFA       \
+        do                                                                                                                              \
+          {                                                                                                                             \
+            hline(screen,20,80,620,gui_bg_color);                                                                                       \
+            textout(screen,font,"x(m)",605,85,gui_bg_color);                                                                            \
+            vline(screen,320,5,155,gui_bg_color);                                                                                       \
+            textout(screen,font,"Im(A/m)",325,10,gui_bg_color);                                                                         \
+            textout(screen,font,"0",325,85,gui_bg_color);                                                                               \
+            triangle(screen,620,80,617,78,617,82,gui_bg_color);                                                                         \
+            triangle(screen,320,5,318,8,322,8,gui_bg_color);                                                                            \
+            vline(screen,560,79,81,gui_bg_color);                                                                                       \
+            textout(screen,font,"h/2",560,85,gui_bg_color);                                                                             \
+            vline(screen,80,79,81,gui_bg_color);                                                                                        \
+            textout(screen,font,"-h/2",80,85,gui_bg_color);                                                                             \
+            hline(screen,319,20,321,gui_bg_color);                                                                                      \
+            hline(screen,319,140,321,gui_bg_color);                                                                                     \
+                                                                                                                                        \
+            hline(screen,20,242,620,gui_bg_color);                                                                                      \
+            textout(screen,font,"x(m)",605,247,gui_bg_color);                                                                           \
+            vline(screen,320,166,316,gui_bg_color);                                                                                     \
+            textout(screen,font,"Re(A/m)",325,171,gui_bg_color);                                                                        \
+            textout(screen,font,"0",325,247,gui_bg_color);                                                                              \
+            triangle(screen,620,242,617,240,617,244,gui_bg_color);                                                                      \
+            triangle(screen,320,166,318,169,322,169,gui_bg_color);                                                                      \
+            vline(screen,560,241,243,gui_bg_color);                                                                                     \
+            textout(screen,font,"h/2",560,247,gui_bg_color);                                                                            \
+            vline(screen,80,241,243,gui_bg_color);                                                                                      \
+            textout(screen,font,"-h/2",80,247,gui_bg_color);                                                                            \
+            hline(screen,319,181,321,gui_bg_color);                                                                                     \
+            hline(screen,319,301,321,gui_bg_color);                                                                                     \
+                                                                                                                                        \
+            abs_max_Re = abs_max_Im = 0;                                                                                                \
+            for(i=0; i<br_elem+1; i++)                                                                                                  \
+               {                                                                                                                        \
+                 if(alpha[i].real() > 0)                                                                                                \
+                   {                                                                                                                    \
+                     if(alpha[i].real() > abs_max_Re)                                                                                   \
+                       abs_max_Re = alpha[i].real();                                                                                    \
+                   }                                                                                                                    \
+                 else                                                                                                                   \
+                   {                                                                                                                    \
+                     if(-alpha[i].real() > abs_max_Re)                                                                                  \
+                       abs_max_Re = -alpha[i].real();                                                                                   \
+                   }                                                                                                                    \
+                                                                                                                                        \
+                 if(alpha[i].imag() > 0)                                                                                                \
+                   {                                                                                                                    \
+                     if(alpha[i].imag() > abs_max_Im)                                                                                   \
+                       abs_max_Im = alpha[i].imag();                                                                                    \
+                   }                                                                                                                    \
+                 else                                                                                                                   \
+                   {                                                                                                                    \
+                     if(-alpha[i].imag() > abs_max_Im)                                                                                  \
+                       abs_max_Im = -alpha[i].imag();                                                                                   \
+                   }                                                                                                                    \
+               }                                                                                                                        \
+              if(abs_max_Im)                                                                                                            \
+                {                                                                                                                       \
+                  sprintf(tmp,"%.0g",abs_max_Im);                                                                                       \
+                  textout(screen,font,tmp,326,20,gui_bg_color);                                                                         \
+                }                                                                                                                       \
+              if(abs_max_Re)                                                                                                            \
+                {                                                                                                                       \
+                  sprintf(tmp,"%.0g",abs_max_Re);                                                                                       \
+                  textout(screen,font,tmp,326,181,gui_bg_color);                                                                        \
+                }                                                                                                                       \
+                                                                                                                                        \
+              for(i=0; i<br_elem; i++)                                                                                                  \
+                 {                                                                                                                      \
+                   line(screen,560-i*br_pix_h/br_elem,(int) (80-br_pix_v*alpha[i].imag()/abs_max_Im),                                   \
+                               560-(i+1)*br_pix_h/br_elem,(int) (80-br_pix_v*alpha[i+1].imag()/abs_max_Im),makecol15(255,0,0));         \
+                   line(screen,560-i*br_pix_h/br_elem,(int) (242-br_pix_v*alpha[i].real()/abs_max_Re),                                  \
+                               560-(i+1)*br_pix_h/br_elem,(int) (242-br_pix_v*alpha[i+1].real()/abs_max_Re),makecol15(255,0,0));        \
+                 }                                                                                                                      \
+          } while(0)
+
+#define NACRTAJ_JEDAN_GRAF      \
+        do                                                                                                                              \
+          { double *analiticko;\
+           \
+            analiticko = (double *) d->dp3;\
+           \
+            hline(screen,20,160,620,gui_bg_color);                                                                                       \
+            textout(screen,font,"x(m)",605,165,gui_bg_color);                                                                            \
+            vline(screen,320,85,235,gui_bg_color);                                                                                       \
+            textout(screen,font,"Im(A/m)",325,80,gui_bg_color);                                                                         \
+            textout(screen,font,"0",325,165,gui_bg_color);                                                                               \
+            triangle(screen,620,160,617,158,617,162,gui_bg_color);                                                                         \
+            triangle(screen,320,85,318,88,322,88,gui_bg_color);                                                                            \
+            vline(screen,560,159,161,gui_bg_color);                                                                                       \
+            textout(screen,font,"h/2",560,165,gui_bg_color);                                                                             \
+            vline(screen,80,159,161,gui_bg_color);                                                                                        \
+            textout(screen,font,"-h/2",80,165,gui_bg_color);                                                                             \
+            hline(screen,319,100,321,gui_bg_color);                                                                                      \
+            hline(screen,319,220,321,gui_bg_color);                                                                                     \
+                                                                                                                                        \
+            abs_max_Re = 0;                                                                                                \
+            for(i=0; i<(unsigned long int) br_pix_h; i++)                                                                                                  \
+               {                                                                                                                        \
+                 if(analiticko[i] > 0)                                                                                                \
+                   {                                                                                                                    \
+                     if(analiticko[i] > abs_max_Re)                                                                                   \
+                       abs_max_Re = analiticko[i];                                                                                    \
+                   }                                                                                                                    \
+                 else                                                                                                                   \
+                   {                                                                                                                    \
+                     if(-analiticko[i] > abs_max_Re)                                                                                  \
+                       abs_max_Re = -analiticko[i];                                                                                   \
+                   }                                                                                                                    \
+               }                                                                                                                        \
+            for(i=0; i<br_elem+1; i++)                                                                                                  \
+               {                                                                                                                        \
+                 if(alpha[i].real() > 0)                                                                                                \
+                   {                                                                                                                    \
+                     if(alpha[i].real() > abs_max_Re)                                                                                   \
+                       abs_max_Re = alpha[i].real();                                                                                    \
+                   }                                                                                                                    \
+                 else                                                                                                                   \
+                   {                                                                                                                    \
+                     if(-alpha[i].real() > abs_max_Re)                                                                                  \
+                       abs_max_Re = -alpha[i].real();                                                                                   \
+                   }                                                                                                                    \
+               }                                                                                                                        \
+            if(abs_max_Re)                                                                                                            \
+              {                                                                                                                       \
+                sprintf(tmp,"%.0g",abs_max_Re);                                                                                       \
+                textout(screen,font,tmp,326,101,gui_bg_color);                                                                        \
+              }                                                                                                                       \
+                                                                                                                                        \
+            for(i=0; i<br_elem; i++)                                                                                                  \
+                 line(screen,560-i*br_pix_h/br_elem,(int) (160-br_pix_v*alpha[i].real()/abs_max_Re),                                  \
+                             560-(i+1)*br_pix_h/br_elem,(int) (160-br_pix_v*alpha[i+1].real()/abs_max_Re),makecol15(255,0,0));        \
+                                                                                                                                        \
+            for(i=0; i<(unsigned long int) br_pix_h-1; i++)\
+               {                     \
+                 line(screen,560-i,(int) (160-br_pix_v*analiticko[i]/abs_max_Re),\
+                             560-(i+1),(int) (160-br_pix_v*analiticko[i+1]/abs_max_Re),makecol15(0,0,255));\
+               }\
+          } while(0)
+

@@ -1,0 +1,47 @@
+#ifndef _MACS_NUM_H_
+#define _MACS_NUM_H_
+
+#define UCITAJ_PODATKE          \
+        do                                                              \
+          {                                                             \
+            h = atof(cp_h);                                             \
+            dx = h / br_elem;                                           \
+                                                                        \
+            H1 = atof(cp_h1);                                           \
+            H2 = atof(cp_h2);                                           \
+            w  = atof(cp_w);                                            \
+            m1 = atof(cp_m1);                                           \
+            m2 = atof(cp_m2);                                           \
+            e1 = atof(cp_e1);                                           \
+            e2 = atof(cp_e2);                                           \
+            s1 = atof(cp_s1);                                           \
+            s2 = atof(cp_s2);                                           \
+          } while(0)
+
+#define SET_ALL_FLAGS           \
+        do                                                              \
+          {                                                             \
+            the_dialog[PRIKAZ].flags = 0;                               \
+            the_dialog[RADIO1].flags = D_SELECTED;                      \
+            the_dialog[RADIO2].flags = 0;                               \
+            the_dialog[TABL].flags = 0;                                 \
+            the_dialog[GRAF].flags = 0;                                 \
+                                                                        \
+            the_dialog[SLIKA].d1 = MY_TRUE;                             \
+            the_dialog[SLIKA].d2 = RADIO1;                              \
+            the_dialog[SLIKA].dp = boje_Re;                             \
+            the_dialog[SLIKA].dp2 = boje_Im;                            \
+            the_dialog[LISTA].dp = alpha;                               \
+            the_dialog[LISTA].dp2 = &br_elem;                           \
+            the_dialog[LISTA].dp3 = &h;                                 \
+            the_dialog[GRAFOVI].dp = alpha;                             \
+            the_dialog[GRAFOVI].dp2 = &br_elem;                         \
+            the_dialog[GRAFOVI].dp3 = NULL;                             \
+            the_dialog[HANDLE].dp = NULL;                               \
+            sprintf(cp_x,"%.15g",h/2);                                  \
+                                                                        \
+            the_dialog[LISTA].d1 =                                      \
+            the_dialog[GRAFOVI].d1 = MY_FALSE;                          \
+          } while(0)
+
+#endif

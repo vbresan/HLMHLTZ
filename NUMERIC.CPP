@@ -1,0 +1,116 @@
+#include <complex.h>
+
+
+/*
+*/
+
+void slozi_globalnu_M_(double_complex a_e1[][2],
+                       double_complex a_e2[][2],
+                       double_complex a_g1[],
+                       double_complex a_g2[],
+                       double_complex a_g3[],
+                       unsigned long int br_elem)
+ { unsigned long int i,
+                     pola_M;
+
+   pola_M = (br_elem-2) / 2;
+
+   for(i=0; i<pola_M; i++)
+      {
+        a_g1[i] = a_e1[0][1];
+        a_g3[i] = a_e1[1][0];
+
+        a_g1[i+pola_M] = a_e2[0][1];
+        a_g3[i+pola_M] = a_e2[1][0];
+
+        a_g2[i]          = a_e1[1][1] + a_e1[0][0];
+        a_g2[i+pola_M+1] = a_e2[1][1] + a_e2[0][0];
+      }
+   a_g2[pola_M] = a_e1[1][1] + a_e2[0][0];
+ }
+
+
+void ini_V_alpha(unsigned long int br_elem,
+                 double            val_1,
+                 double            val_2,
+                 double_complex    alpha[])
+ { unsigned long int i;
+
+   alpha[0]       = val_1;
+   alpha[br_elem] = val_2;
+
+   for(i=1; i<br_elem; i++)
+      alpha[i] = 0;
+ }
+
+/*
+*/
+
+void ini_V_rjes(unsigned long int br_elem,
+                double            val_1,
+                double            val_2,
+                double_complex    a_e1[][2],
+                double_complex    a_e2[][2],
+                double_complex    rjes[])
+ { unsigned long int i;
+
+   for(i=0; i<br_elem-1; i++)
+      rjes[i] = 0;
+
+   rjes[0]         += -val_1*a_e1[1][0];
+   rjes[br_elem-2] += -val_2*a_e2[0][1];
+ }
+
+/*
+*/
+
+void M_2_gtrokM(double_complex a_g1[],
+                double_complex a_g2[],
+                double_complex a_g3[],
+                double_complex rjes[],
+                unsigned long int br_elem)
+ { unsigned long int i;
+
+   for(i=0; i<br_elem-2; i++)
+      {
+        // skrati gornji redak
+
+        a_g1[i] /= a_g2[i];
+        rjes[i] /= a_g2[i];
+        a_g2[i] =  1;                //  a_g2[i] /= a_g2[i];
+
+        // pomnozi citav gornji redak
+
+        a_g2[i] =  a_g3[i];         // a_g2[i] *= a_g3[i];
+        a_g1[i] *= a_g3[i];
+        rjes[i] *= a_g3[i];
+
+        // oduzmi od donjeg retka gornji
+
+        a_g3[i]   =  0;             // a_g3[i] -= a_g2[i];
+        a_g2[i+1] -= a_g1[i];
+        rjes[i+1] -= rjes[i];
+      }
+ }
+
+
+/*
+*/
+
+void gtrokM_mul_Valpha_eq_Vrjes(double_complex a_g1[],
+                                double_complex a_g2[],
+                                double_complex alpha[],
+                                double_complex rjes[],
+                                unsigned long int br_elem)
+ { unsigned long int i;
+
+   for(i=br_elem-2; i!=0; i--)
+      {
+        alpha[i+1] = rjes[i] / a_g2[i];
+
+        a_g1[i-1] *= alpha[i+1];
+        rjes[i-1] -= a_g1[i-1];
+      }
+   alpha[1] = rjes[0] / a_g2[0];
+ }
+
